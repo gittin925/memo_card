@@ -4,12 +4,11 @@ import uuid
 import os
 
 DATA_FILE = "memo_data.csv"
-
-# 初期化
-if os.path.exists(DATA_FILE):
+if os.path.exists(DATA_FILE) and os.path.getsize(DATA_FILE) > 0:
     df = pd.read_csv(DATA_FILE)
 else:
     df = pd.DataFrame(columns=["id", "title", "content", "x", "y", "color", "tag"])
+
 
 st.title("🗂️ メモカード視覚化ツール")
 
@@ -35,7 +34,7 @@ with st.form("new_memo"):
         df = pd.concat([df, pd.DataFrame([new_memo])], ignore_index=True)
         df.to_csv(DATA_FILE, index=False)
         st.success("メモを追加しました。")
-        st.experimental_rerun()
+        st.rerun()
 
 # カード表示
 st.subheader("📌 メモ一覧（仮想配置）")
